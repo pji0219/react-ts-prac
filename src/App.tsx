@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+import Products from './components/Products';
+import { Address, Restaurant } from './model/restaurant';
+import BestMenu from './components/BestMenu';
+
+const data: Restaurant = {
+  name: '맛있는 식당',
+  category: '양식',
+  address: {
+    city: '서울',
+    detail: '강남구',
+    zipCode: 123,
+  },
+  menu: [
+    { name: '티본 스테이크', price: 100000, category: '스테이크' },
+    { name: '로제 파스타', price: 20000, category: '파스타' },
+  ],
+};
+
+const App: React.FC = () => {
+  const [products, setProducts] = useState<Restaurant>(data);
+
+  const addressChangeHandler = (address: Address) => {
+    setProducts((prev) => ({ ...prev, address }));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Products
+        products={products}
+        addressChangeHandler={addressChangeHandler}
+      />
+      <BestMenu name='불고기 피자' category='피자' price={10000} star={5} />
+    </>
   );
-}
+};
 
 export default App;
